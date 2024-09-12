@@ -1,36 +1,20 @@
 <template>
   <div id="app">
-    <ProductInput @product-added="addProduct"></ProductInput>
-    <Cart :products="products"></Cart>
-    <Product v-if="selectedProduct" :product="selectedProduct"></Product>
+    <View></View>
   </div>
 </template>
 
 <script>
-import Product from './components/Product.vue';
-import ProductInput from './components/ProductInput.vue';
-import Cart from './components/Cart.vue';
-import ProductListing from './components/ProductListing.vue';
+import View from './View/View.vue';
 
 export default {
   name: 'App',
   components: {
-    Product,
-    ProductInput,
-    Cart,
-    ProductListing
-  },
-  data() {
-    return {
-      products: [],
-      selectedProduct: null
-    };
-  },
-  methods: {
-    addProduct(newProduct) {
-      this.products.push(newProduct);
-      this.selectedProduct = newProduct;
-    }
+    View
   }
 };
 </script>
+
+<style scoped>
+/* Add styles for your App component here */
+</style>
