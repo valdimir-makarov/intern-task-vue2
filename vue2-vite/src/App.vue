@@ -1,28 +1,33 @@
 <template>
   <div id="app">
     <ProductInput @product-added="addProduct"></ProductInput>
-    <Product v-if="product" :product="product"></Product>
+    <Cart :products="products"></Cart>
+    <Product v-if="selectedProduct" :product="selectedProduct"></Product>
   </div>
 </template>
 
 <script>
 import Product from './components/Product.vue';
 import ProductInput from './components/ProductInput.vue';
+import Cart from './components/Cart.vue';
 
 export default {
   name: 'App',
   components: {
     Product,
-    ProductInput
+    ProductInput,
+    Cart
   },
   data() {
     return {
-      product: null
+      products: [],
+      selectedProduct: null
     };
   },
   methods: {
     addProduct(newProduct) {
-      this.product = newProduct;
+      this.products.push(newProduct);
+      this.selectedProduct = newProduct;
     }
   }
 };
