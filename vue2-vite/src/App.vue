@@ -10,13 +10,15 @@
 import Product from './components/Product.vue';
 import ProductInput from './components/ProductInput.vue';
 import Cart from './components/Cart.vue';
+import ProductListing from './components/ProductListing.vue';
 
 export default {
   name: 'App',
   components: {
     Product,
     ProductInput,
-    Cart
+    Cart,
+    ProductListing
   },
   data() {
     return {
