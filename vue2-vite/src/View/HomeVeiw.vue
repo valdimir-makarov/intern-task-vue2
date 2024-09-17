@@ -4,10 +4,10 @@
     
         <ul class="navbar-links">
           <li>
-            <RouterLink to="/product">Product</RouterLink>
+            <RouterLink to="/product"> Add Product</RouterLink>
           </li>
           <li>
-            <RouterLink to="/ProductListing">Product Listing</RouterLink>
+           
           </li>
           <li>
            
@@ -15,7 +15,7 @@
           <li>
             <RouterLink to="/ProductListing">You can see the productList Here</RouterLink>
           </li>
-          <li><RouterLink to="/Cart">Product Cart</RouterLink></li>
+          
           <li><RouterLink to="/ProductView">Product View</RouterLink></li>
         </ul>
       </nav>
