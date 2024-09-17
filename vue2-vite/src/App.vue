@@ -1,16 +1,15 @@
 <template>
   <div id="app">
-    <View></View>
+    <RouterView />
+    
   </div>
 </template>
 
 <script>
-import View from './View/View.vue';
 
 export default {
   name: 'App',
   components: {
-    View
   }
 };
 </script>
