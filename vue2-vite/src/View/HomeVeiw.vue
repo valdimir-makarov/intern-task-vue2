@@ -23,7 +23,7 @@
       
       </p>
       <main>
-        <RouterView />
+       
       </main>
     </div>
   </template>
