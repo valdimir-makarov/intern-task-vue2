@@ -1,30 +1,26 @@
 <template>
-    <div class="product">
-      <h2>Product Details</h2>
+  <div class="product">
+    <h2>Product Details</h2>
+    <div v-if="product">
       <p><strong>Name:</strong> {{ product.name }}</p>
       <p><strong>Price:</strong> ${{ product.price }}</p>
       <p><strong>Description:</strong> {{ product.description }}</p>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "Product",
-    props: {
-      product: {
-        type: Object,
-        required: true
-      }
+    <p v-else>No product selected.</p>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+  name: 'Product',
+  computed: {
+    ...mapGetters(['getProducts']),
+    product() {
+     
+      return this.getProducts.length ? this.getProducts[this.getProducts.length - 1] : null;
     }
-    
-  };
-  </script>
-  
-  <style scoped>
-  .product {
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 10px;
   }
-  </style>
-  
+};
+</script>
