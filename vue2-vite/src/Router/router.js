@@ -2,13 +2,18 @@ import { createMemoryHistory, createRouter } from 'vue-router'
 
 import HomeView from  '../View/HomeVeiw.vue'
 import Product from '../components/Product.vue'
-import ProductPages from '../pages/ProductPages.vue'
+
 import ProductListing from '../components/ProductListing.vue'
+
+import ProductInput from '../components/ProductInput.vue'
+import ProductPages from '../pages/ProductPages.vue'
 
 const routes = [
   { path: '/', component: HomeView },
   {path:'/product', component:ProductPages},
-  {path:'/ProductListing',component:ProductListing}
+  {path:'/ProductListing',component:ProductListing},
+  {path:'/productInput',component:ProductInput},
+  {path:'/ProductView',component:ProductPages}
 
  
 ]
