@@ -1,14 +1,14 @@
 <template>
     <div class="container mx-auto p-4">
-      <!-- Search Component -->
+     
       <ProductSearch />
       
-      <!-- Search Button -->
+    
       <div class="text-center my-4">
         
       </div>
   
-      <!-- Product List -->
+     
       <div v-if="filteredProducts.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="product in filteredProducts" :key="product.id" class="border p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out">
           <h3 class="text-xl font-semibold mb-2">{{ product.title }}</h3>
@@ -16,7 +16,7 @@
         </div>
       </div>
   
-      <!-- No Products Found -->
+      
       <div v-else class="text-center text-gray-500 mt-6">
         <p>No products found.</p>
       </div>
