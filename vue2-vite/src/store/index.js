@@ -4,6 +4,7 @@ export default createStore({
   state: {
     inputProducts: [], 
     fetchedProducts: [],
+    sortByPrice: null,
  
  searchQuery:""
  
@@ -16,6 +17,9 @@ export default createStore({
     SET_FETCHED_PRODUCTS(state, products) {
       console.log("Setting fetched products:", products);
       state.fetchedProducts = products; 
+    },
+    SET_SORT_BY_PRICE(state, sortOrder) {
+      state.sortByPrice = sortOrder;
     }
 ,
 SET_SEARCH_QUERY(state, query) {
@@ -45,10 +49,22 @@ SET_SEARCH_QUERY(state, query) {
     updateSearchQuery({ commit }, query) {
       commit("SET_SEARCH_QUERY", query);
     },
+    updateSortByPrice({ commit }, sortOrder) {
+      commit('SET_SORT_BY_PRICE', sortOrder);
+    }
   },
   getters: {
     getAllProducts(state) {
-      return [...state.inputProducts, ...state.fetchedProducts];
+      let allProducts = [...state.inputProducts, ...state.fetchedProducts];
+    
+    // Apply sorting here i used a sort function
+    if (state.sortByPrice === 'asc') {
+      return allProducts.sort((a, b) => a.price - b.price);
+    } else if (state.sortByPrice === 'desc') {
+      return allProducts.sort((a, b) => b.price - a.price);
+    }
+    return allProducts;
+
     },
     filteredProducts: (state, getters) => {
       return getters.getAllProducts.filter((product) =>
