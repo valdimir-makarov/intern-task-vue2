@@ -2,6 +2,7 @@
     <div class="container mx-auto p-4">
       <ProductSearch />
   
+      <!-- Price Filter Options -->
       <div class="my-4 flex justify-center space-x-4">
         <button
           v-for="(range, key) in filtersAsNumbers"
@@ -21,6 +22,7 @@
         </button>
       </div>
   
+      <!-- Sort Buttons -->
       <div class="text-center my-4">
         <button
           @click="sortByPrice('asc')"
@@ -36,9 +38,10 @@
         </button>
       </div>
   
-      <div v-if="filteredProducts.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Products Listing -->
+      <div v-if="paginatedProducts.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
-          v-for="product in filteredProducts"
+          v-for="product in paginatedProducts"
           :key="product.id"
           class="border p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out"
         >
@@ -47,8 +50,22 @@
         </div>
       </div>
   
+      <!-- No Products Found -->
       <div v-else class="text-center text-gray-500 mt-6">
         <p>No products found.</p>
+      </div>
+  
+      <!-- Custom Pagination -->
+      <div class="flex justify-center mt-6 space-x-2">
+        <button
+          v-for="pageNumber in pageCount"
+          :key="pageNumber"
+          @click="changePage(pageNumber)"
+          :class="page === pageNumber ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'"
+          class="py-2 px-4 rounded-md transition duration-300 ease-in-out"
+        >
+          {{ pageNumber }}
+        </button>
       </div>
     </div>
   </template>
@@ -72,11 +89,14 @@
           '$200 - $500': [200, 500],
           'Above $500': [500, Infinity]
         },
-        sortOrder: ''
+        sortOrder: '',
+        page: 1,
+        perPage: 12
       };
     },
     computed: {
       ...mapGetters(['getAllProducts']),
+      
       filteredProducts() {
         let products = this.getAllProducts.filter(product => {
           if (this.filterApplied.length < 1) {
@@ -96,10 +116,21 @@
         }
   
         return products;
+      },
+      
+      paginatedProducts() {
+        const start = (this.page - 1) * this.perPage;
+        const end = start + this.perPage;
+        return this.filteredProducts.slice(start, end);
+      },
+      
+      pageCount() {
+        return Math.ceil(this.filteredProducts.length / this.perPage);
       }
     },
     methods: {
       ...mapActions(['fetchProducts']),
+      
       setFilter(filter) {
         const index = this.filterApplied.indexOf(filter);
         if (index > -1) {
@@ -108,11 +139,17 @@
           this.filterApplied.push(filter);
         }
       },
+      
       clearFilter() {
         this.filterApplied = [];
       },
+      
       sortByPrice(order) {
         this.sortOrder = order;
+      },
+      
+      changePage(page) {
+        this.page = page;
       }
     },
     mounted() {
@@ -120,4 +157,8 @@
     }
   };
   </script>
+  
+  <style scoped>
+ 
+  </style>
   
