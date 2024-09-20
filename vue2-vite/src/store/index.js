@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
+import ProductService from '../Services/ProductServices'; 
 
 export default createStore({
   state: {
@@ -10,11 +11,9 @@ export default createStore({
   },
   mutations: {
     ADD_PRODUCT(state, product) {
-      console.log("Adding product:", product);
       state.inputProducts.push(product); 
     },
     SET_FETCHED_PRODUCTS(state, products) {
-      console.log("Setting fetched products:", products);
       state.fetchedProducts = products; 
     },
     SET_SORT_BY_PRICE(state, sortOrder) {
@@ -30,8 +29,7 @@ export default createStore({
     },
     async fetchProducts({ commit }) {
       try {
-        const response = await fetch('https://fakestoreapi.com/products');
-        const products = await response.json();
+        const products = await ProductService.fetchProducts();  
         commit('SET_FETCHED_PRODUCTS', products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -62,5 +60,5 @@ export default createStore({
       );
     }
   },
-  plugins: [createPersistedState()]  // Persisted  product input state in local storage 
+  plugins: [createPersistedState()]  // Persisted product input state in local storage 
 });
