@@ -18,7 +18,7 @@
           
           <li><RouterLink to="/ProductView">Product View</RouterLink></li>
           <li>
-            <li><RouterLink to="/ProductListing2">Product Search</RouterLink></li>
+           
 
           </li>
         </ul>
@@ -30,8 +30,30 @@
        
       </main>
     </div>
+    <div>
+
+      <ProductListing2></ProductListing2>
+    </div>
+    
   </template>
-  
+  <script>
+import ProductListing2 from '../components/ProductListing2.vue';
+
+
+export default {
+  name: 'HomeView',
+  components: {
+    ProductListing2
+  }
+};
+
+
+
+</script>
+
+
+
+
   <style scoped>
   .navbar {
     display: flex;

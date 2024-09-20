@@ -50,7 +50,6 @@ export default {
       this.name = '';
       this.price = '';
       this.description = '';
-      this.$router.push('/productListing'); 
   }
 }
 };
