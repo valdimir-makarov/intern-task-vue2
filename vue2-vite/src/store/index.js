@@ -26,7 +26,6 @@ export default createStore({
   },
   actions: {
     addProduct({ commit }, product) {
-      console.log("Dispatching product:", product);
       commit('ADD_PRODUCT', product);
     },
     async fetchProducts({ commit }) {
