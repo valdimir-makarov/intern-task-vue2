@@ -1,6 +1,8 @@
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
-import ProductService from '../Services/ProductServices'; 
+
+import { ProductServices } from '../Services'; // Correct import
+
 
 export default createStore({
   state: {
@@ -29,7 +31,7 @@ export default createStore({
     },
     async fetchProducts({ commit }) {
       try {
-        const products = await ProductService.fetchProducts();  
+        const products = await ProductServices.fetchProducts1();  
         commit('SET_FETCHED_PRODUCTS', products);
       } catch (error) {
         console.error("Error fetching products:", error);

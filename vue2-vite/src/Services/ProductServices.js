@@ -1,10 +1,11 @@
+// src/Services/ProductServices.js
+
 import axios from 'axios';
 
 const API_URL = 'https://fakestoreapi.com/products';
 
-const ProductService = {
-
-  async fetchProducts() {
+export const ProductServices = {
+  async fetchProducts1() {
     try {
       const response = await axios.get(API_URL);
       return response.data;
@@ -14,5 +15,3 @@ const ProductService = {
     }
   }
 };
-
-export default ProductService;
