@@ -1,13 +1,12 @@
 import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 export default createStore({
   state: {
     inputProducts: [], 
     fetchedProducts: [],
     sortByPrice: null,
- 
- searchQuery:""
- 
+    searchQuery: ""
   },
   mutations: {
     ADD_PRODUCT(state, product) {
@@ -20,19 +19,12 @@ export default createStore({
     },
     SET_SORT_BY_PRICE(state, sortOrder) {
       state.sortByPrice = sortOrder;
+    },
+    SET_SEARCH_QUERY(state, query) {
+      state.searchQuery = query;
     }
-,
-SET_SEARCH_QUERY(state, query) {
-  state.searchQuery = query;
-}
-
-
-
-
   },
   actions: {
-
-    
     addProduct({ commit }, product) {
       console.log("Dispatching product:", product);
       commit('ADD_PRODUCT', product);
@@ -56,22 +48,20 @@ SET_SEARCH_QUERY(state, query) {
   getters: {
     getAllProducts(state) {
       let allProducts = [...state.inputProducts, ...state.fetchedProducts];
-    
-    // Apply sorting here i used a sort function
-    if (state.sortByPrice === 'asc') {
-      return allProducts.sort((a, b) => a.price - b.price);
-    } else if (state.sortByPrice === 'desc') {
-      return allProducts.sort((a, b) => b.price - a.price);
-    }
-    return allProducts;
 
+      // Apply sorting here
+      if (state.sortByPrice === 'asc') {
+        return allProducts.sort((a, b) => a.price - b.price);
+      } else if (state.sortByPrice === 'desc') {
+        return allProducts.sort((a, b) => b.price - a.price);
+      }
+      return allProducts;
     },
     filteredProducts: (state, getters) => {
       return getters.getAllProducts.filter((product) =>
         product.title.toLowerCase().includes(state.searchQuery.toLowerCase())
-      
       );
-      console.log(state.searchQuery)
     }
-  }
+  },
+  plugins: [createPersistedState()]  // Persisted  product input state in local storage 
 });
