@@ -16,6 +16,7 @@
         required: true
       }
     }
+    
   };
   </script>
   

@@ -37,12 +37,12 @@
           description: this.description,
           quantity:this.quantity
         };
-        console.log(product)
+       
         this.$emit('product-added', product);
         this.name = '';
         this.price = '';
         this.description = '';
-        
+
       }
     }
   };
