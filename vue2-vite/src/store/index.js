@@ -1,12 +1,10 @@
+import { ProductServices } from '../Services'; // Correct import
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
-import { ProductServices } from '../Services'; // Correct import
-
-
 export default createStore({
   state: {
-    inputProducts: [], 
+    inputProducts: [],
     fetchedProducts: [],
     sortByPrice: null,
     searchQuery: ""
@@ -16,7 +14,7 @@ export default createStore({
       state.inputProducts.push(product); 
     },
     SET_FETCHED_PRODUCTS(state, products) {
-      state.fetchedProducts = products; 
+      state.fetchedProducts = products;
     },
     SET_SORT_BY_PRICE(state, sortOrder) {
       state.sortByPrice = sortOrder;
@@ -26,12 +24,17 @@ export default createStore({
     }
   },
   actions: {
-    addProduct({ commit }, product) {
-      commit('ADD_PRODUCT', product);
+    async addProductToServer({ commit }, product) {
+      try {
+        const response = await ProductServices.addProduct(product);
+        commit('ADD_PRODUCT', response); 
+      } catch (error) {
+        console.error("Error adding product to server:", error);
+      }
     },
     async fetchProducts({ commit }) {
       try {
-        const products = await ProductServices.fetchProducts1();  
+        const products = await ProductServices.fetchProducts1();
         commit('SET_FETCHED_PRODUCTS', products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -47,8 +50,6 @@ export default createStore({
   getters: {
     getAllProducts(state) {
       let allProducts = [...state.inputProducts, ...state.fetchedProducts];
-
-      // Apply sorting here
       if (state.sortByPrice === 'asc') {
         return allProducts.sort((a, b) => a.price - b.price);
       } else if (state.sortByPrice === 'desc') {
@@ -62,5 +63,5 @@ export default createStore({
       );
     }
   },
-  plugins: [createPersistedState()]  // Persisted product input state in local storage 
+  plugins: [createPersistedState()]
 });

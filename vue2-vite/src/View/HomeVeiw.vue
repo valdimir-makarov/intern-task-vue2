@@ -4,7 +4,7 @@
     
         <ul class="navbar-links">
           <li>
-            <RouterLink to="/productinput"> Add Product</RouterLink>
+            <RouterLink to="/productInput"> Add Product</RouterLink>
           </li>
           <li>
            
