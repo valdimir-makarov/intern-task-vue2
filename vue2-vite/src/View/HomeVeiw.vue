@@ -17,6 +17,10 @@
           </li>
           
           <li><RouterLink to="/ProductView">Product View</RouterLink></li>
+          <li>
+            <li><RouterLink to="/ProductListing2">Product Search</RouterLink></li>
+
+          </li>
         </ul>
       </nav>
       <p>
