@@ -1,7 +1,7 @@
 <template>
     <div>
-      <ProductInput @product-added="addProductToPage" />
-      <Product v-if="product" :product="product" />
+      <ProductInput />
+      <Product />
     </div>
   </template>
   
@@ -13,21 +13,7 @@
     components: {
       Product,
       ProductInput
-    },
-    data() {
-      return {
-        product: null 
-      };
-    },
-    methods: {
-      addProductToPage(product) {
-        this.product = product;
-      }
     }
   };
   </script>
-  
-  <style scoped>
- 
-  </style>
   
