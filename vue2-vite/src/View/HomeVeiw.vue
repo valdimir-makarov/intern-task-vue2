@@ -1,55 +1,38 @@
-<template>
-    <div>
-      <nav class="navbar">
-    
-        <ul class="navbar-links">
-          <li>
-            <RouterLink to="/productInput"> Add Product</RouterLink>
-          </li>
-          <li>
-           
-          </li>
-          <li>
-           
-          </li>
-          <li>
-            <RouterLink to="/ProductListing">You can see the productList Here</RouterLink>
-          </li>
-          
-          <li><RouterLink to="/ProductView">Product View</RouterLink></li>
-          <li>
-           
+<<template>
+  <div>
+    <nav class="navbar">
+      <ul class="navbar-links">
+        <li>
+          <RouterLink to="/productInput">Add Product</RouterLink>
+        </li>
+        <li>
+          <RouterLink to="/ProductListing">You can see the productList here</RouterLink>
+        </li>
+        <li><RouterLink to="/ProductView">Product View</RouterLink></li>
+      </ul>
+    </nav>
 
-          </li>
-        </ul>
-      </nav>
-      <p>
-      
-      </p>
-      <main>
-       
-      </main>
-    </div>
-    <div>
+    <main>
+      <!-- Displaying ProductListing2 component on the home page -->
+      <ProductListing2 />
+    </main>
+  </div>
+</template>
 
-      <ProductListing2></ProductListing2>
-    </div>
-    
-  </template>
-  <script>
+<script>
+import Product from '../components/Product.vue';
 import ProductListing2 from '../components/ProductListing2.vue';
-
 
 export default {
   name: 'HomeView',
   components: {
-    ProductListing2
+    ProductListing2,
+    Product
   }
 };
-
-
-
 </script>
+
+
 
 
 

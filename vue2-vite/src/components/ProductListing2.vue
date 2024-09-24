@@ -13,6 +13,7 @@
         >
           {{ key }}
         </button>
+      
   
         <button
           @click="clearFilter"
@@ -37,14 +38,14 @@
           Sort by Price: High to Low
         </button>
       </div>
-  
       <!-- Products Listing -->
       <div v-if="paginatedProducts.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div
           v-for="product in paginatedProducts"
           :key="product.id"
           class="border p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out"
-        >
+        >  <pre>{{ product }}</pre>
+
           <h3 class="text-xl font-semibold mb-2">{{ product.title }}</h3>
           <p class="text-lg text-gray-600 mb-4">\${{ product.price }}</p>
         </div>
@@ -96,7 +97,8 @@
     },
     computed: {
       ...mapGetters(['getAllProducts']),
-      
+      ...mapGetters(['filteredAndSortedProducts']),
+
       filteredProducts() {
         let products = this.getAllProducts.filter(product => {
           if (this.filterApplied.length < 1) {
@@ -119,17 +121,17 @@
       },
       
       paginatedProducts() {
-        const start = (this.page - 1) * this.perPage;
-        const end = start + this.perPage;
-        return this.filteredProducts.slice(start, end);
-      },
-      
-      pageCount() {
-        return Math.ceil(this.filteredProducts.length / this.perPage);
-      }
+    const start = (this.page - 1) * this.perPage;
+    const end = start + this.perPage;
+    return this.filteredAndSortedProducts.slice(start, end); 
+  },
+
+  pageCount() {
+    return Math.ceil(this.filteredAndSortedProducts.length / this.perPage);
+  }
     },
     methods: {
-      ...mapActions(['fetchProducts']),
+      ...mapActions(['fetchProducts', 'updateSortByPrice']),
       
       setFilter(filter) {
         const index = this.filterApplied.indexOf(filter);
@@ -145,12 +147,12 @@
       },
       
       sortByPrice(order) {
-        this.sortOrder = order;
-      },
-      
-      changePage(page) {
-        this.page = page;
-      }
+    this.updateSortByPrice(order); 
+  },
+
+  changePage(page) {
+    this.page = page;
+  }
     },
     mounted() {
       this.fetchProducts();

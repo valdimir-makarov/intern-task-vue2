@@ -27,6 +27,7 @@ export default createStore({
     async addProductToServer({ commit }, product) {
       try {
         const response = await ProductServices.addProduct(product);
+       
         commit('ADD_PRODUCT', response); 
       } catch (error) {
         console.error("Error adding product to server:", error);
@@ -35,6 +36,10 @@ export default createStore({
     async fetchProducts({ commit }) {
       try {
         const products = await ProductServices.fetchProducts1();
+        // Ensure price is a number for each product
+        products.forEach(product => {
+          product.price = parseFloat(product.price);
+        });
         commit('SET_FETCHED_PRODUCTS', products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -49,18 +54,26 @@ export default createStore({
   },
   getters: {
     getAllProducts(state) {
-      let allProducts = [...state.inputProducts, ...state.fetchedProducts];
-      if (state.sortByPrice === 'asc') {
-        return allProducts.sort((a, b) => a.price - b.price);
-      } else if (state.sortByPrice === 'desc') {
-        return allProducts.sort((a, b) => b.price - a.price);
-      }
-      return allProducts;
+      return [...state.inputProducts, ...state.fetchedProducts];
     },
-    filteredProducts: (state, getters) => {
-      return getters.getAllProducts.filter((product) =>
-        product.title.toLowerCase().includes(state.searchQuery.toLowerCase())
-      );
+
+    filteredAndSortedProducts: (state, getters) => {
+      let products = getters.getAllProducts;
+
+      const query = state.searchQuery.toLowerCase();
+      products = products.filter(product => {
+        const title = product.title ? product.title.toLowerCase() : '';
+        const name = product.name ? product.name.toLowerCase() : '';
+        return title.includes(query) || name.includes(query);
+      });
+
+      if (state.sortByPrice === 'asc') {
+        return products.sort((a, b) => a.price - b.price);
+      } else if (state.sortByPrice === 'desc') {
+        return products.sort((a, b) => b.price - a.price);
+      }
+
+      return products; 
     }
   },
   plugins: [createPersistedState()]

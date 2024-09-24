@@ -1,16 +1,15 @@
 <template>
   <div class="product-input max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
     <h2 class="text-2xl font-semibold mb-6 text-gray-700">Add New Product</h2>
-    
     <form @submit.prevent="submitProduct" class="space-y-4">
       <div>
-        <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
+        <label for="title" class="block text-sm font-medium text-gray-700">Product Title</label>
         <input 
           type="text" 
-          id="name" 
-          v-model="name" 
+          id="title" 
+          v-model="title" 
           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          placeholder="Enter product name"
+          placeholder="Enter product title"
         />
       </div>
 
@@ -48,21 +47,14 @@
   </div>
 </template>
 
-
-
 <script>
 import { mapActions } from 'vuex';
-
-
-
-
-
 
 export default {
   name: 'ProductInput',
   data() {
     return {
-      name: '',
+      title: '',   // Only keep title
       price: '',
       description: ''
     };
@@ -70,16 +62,18 @@ export default {
   methods: {
     ...mapActions(['addProductToServer']),
     submitProduct() {
-      const product = {
-        name: this.name,
-        price: parseFloat(this.price),
-        description: this.description
-      };
-      this.addProductToServer(product); // Send product to the server
-      this.name = '';
-      this.price = '';
-      this.description = '';
-    }
+  const product = {
+    title: this.title,
+    price: parseFloat(this.price), // This ensures the price is stored as a number
+    description: this.description
+  };
+  
+  this.addProductToServer(product);
+  this.title = '';
+  this.price = '';
+  this.description = '';
+  this.$router.push('/');
+}
   }
 };
 </script>

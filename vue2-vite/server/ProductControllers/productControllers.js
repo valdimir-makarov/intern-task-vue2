@@ -14,8 +14,8 @@ const getProduct = (req, res) => {
 };
 
 const addProduct = (req, res) => {
-    const { id, name, title } = req.body; 
-    const newProduct = new Product(id, name, title); 
+    const { id, name, title ,price} = req.body; 
+    const newProduct = new Product(id, name, title,price); 
     res.status(201).json(createProduct(newProduct)); 
   };
   
