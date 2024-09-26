@@ -45,3 +45,4 @@ module.exports = {
     updateProductById,
     deleteProductById
 };
+//relayionships+normalization+

@@ -54,8 +54,20 @@ export default createStore({
   },
   getters: {
     getAllProducts(state) {
-      return [...state.inputProducts, ...state.fetchedProducts];
+      const combinedProducts = [...state.inputProducts, ...state.fetchedProducts];
+      
+      // Remove duplicates by checking product titles (or IDs if preferred)
+      const uniqueProducts = combinedProducts.reduce((acc, product) => {
+        if (!acc.find(p => p.title === product.title)) {
+          acc.push(product);
+        }
+        return acc;
+      }, []);
+    
+      return uniqueProducts;
     },
+    
+    
 
     filteredAndSortedProducts: (state, getters) => {
       let products = getters.getAllProducts;
