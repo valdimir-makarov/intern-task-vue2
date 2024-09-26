@@ -1,4 +1,3 @@
-
 <template>
   <div class="flex justify-center mt-4">
     <input
@@ -10,8 +9,6 @@
     />
   </div>
 </template>
-
-
 
 <script>
 import { mapState, mapActions } from "vuex";
@@ -27,19 +24,14 @@ export default {
       searchQuery: (state) => state.searchQuery
     })
   },
-  watch: {
-    searchQuery(newVal) {
-      this.localSearchQuery = newVal;
-    }
-  },
   methods: {
     ...mapActions(['updateSearchQuery']),
     searchProducts() {
-      this.updateSearchQuery(this.localSearchQuery);
+      this.updateSearchQuery(this.localSearchQuery); // Sync local search with Vuex
     }
   },
   mounted() {
-    this.localSearchQuery = this.searchQuery;
+    this.localSearchQuery = this.searchQuery; // Initialize localSearchQuery
   }
 };
 </script>
