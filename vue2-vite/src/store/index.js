@@ -1,42 +1,45 @@
+import { ProductServices } from '../Services'; // Correct import
 import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 export default createStore({
   state: {
-    inputProducts: [], 
+    inputProducts: [],
     fetchedProducts: [],
- 
- searchQuery:""
- 
+    sortByPrice: null,
+    searchQuery: ""
   },
   mutations: {
     ADD_PRODUCT(state, product) {
-      console.log("Adding product:", product);
       state.inputProducts.push(product); 
     },
     SET_FETCHED_PRODUCTS(state, products) {
-      console.log("Setting fetched products:", products);
-      state.fetchedProducts = products; 
+      state.fetchedProducts = products;
+    },
+    SET_SORT_BY_PRICE(state, sortOrder) {
+      state.sortByPrice = sortOrder;
+    },
+    SET_SEARCH_QUERY(state, query) {
+      state.searchQuery = query;
     }
-,
-SET_SEARCH_QUERY(state, query) {
-  state.searchQuery = query;
-}
-
-
-
-
   },
   actions: {
-
-    
-    addProduct({ commit }, product) {
-      console.log("Dispatching product:", product);
-      commit('ADD_PRODUCT', product);
+    async addProductToServer({ commit }, product) {
+      try {
+        const response = await ProductServices.addProduct(product);
+       
+        commit('ADD_PRODUCT', response); 
+      } catch (error) {
+        console.error("Error adding product to server:", error);
+      }
     },
     async fetchProducts({ commit }) {
       try {
-        const response = await fetch('https://fakestoreapi.com/products');
-        const products = await response.json();
+        const products = await ProductServices.fetchProducts1();
+        // Ensure price is a number for each product
+        products.forEach(product => {
+          product.price = parseFloat(product.price);
+        });
         commit('SET_FETCHED_PRODUCTS', products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -45,17 +48,45 @@ SET_SEARCH_QUERY(state, query) {
     updateSearchQuery({ commit }, query) {
       commit("SET_SEARCH_QUERY", query);
     },
+    updateSortByPrice({ commit }, sortOrder) {
+      commit('SET_SORT_BY_PRICE', sortOrder);
+    }
   },
   getters: {
     getAllProducts(state) {
-      return [...state.inputProducts, ...state.fetchedProducts];
-    },
-    filteredProducts: (state, getters) => {
-      return getters.getAllProducts.filter((product) =>
-        product.title.toLowerCase().includes(state.searchQuery.toLowerCase())
+      const combinedProducts = [...state.inputProducts, ...state.fetchedProducts];
       
-      );
-      console.log(state.searchQuery)
+      // Remove duplicates by checking product titles (or IDs if preferred)
+      const uniqueProducts = combinedProducts.reduce((acc, product) => {
+        if (!acc.find(p => p.title === product.title)) {
+          acc.push(product);
+        }
+        return acc;
+      }, []);
+    
+      return uniqueProducts;
+    },
+    
+    
+
+    filteredAndSortedProducts: (state, getters) => {
+      let products = getters.getAllProducts;
+
+      const query = state.searchQuery.toLowerCase();
+      products = products.filter(product => {
+        const title = product.title ? product.title.toLowerCase() : '';
+        const name = product.name ? product.name.toLowerCase() : '';
+        return title.includes(query) || name.includes(query);
+      });
+
+      if (state.sortByPrice === 'asc') {
+        return products.sort((a, b) => a.price - b.price);
+      } else if (state.sortByPrice === 'desc') {
+        return products.sort((a, b) => b.price - a.price);
+      }
+
+      return products; 
     }
-  }
+  },
+  plugins: [createPersistedState()]
 });
